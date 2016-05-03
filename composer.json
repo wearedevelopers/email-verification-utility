@@ -1,0 +1,21 @@
+{
+    "name": "wearedevelopers/email-verification-utility",
+    "description": "Email Verification Utility",
+    "type": "utility",
+    "license": "The MIT License (MIT)",
+    "authors": [
+        {
+            "name": "Jarryd Goodman",
+            "email": "jarryd@wearemonsters.co.za"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.4.0"
+    },
+    "autoload": {
+        "psr-0": {
+            "WeAreDevelopers": "src/"
+        }
+    }
+}
