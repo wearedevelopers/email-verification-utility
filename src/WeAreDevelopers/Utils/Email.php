@@ -25,11 +25,12 @@ class Email
      * @param string $to
      * @param string $from
      * @param bool $strict Defaults to false. Marks all yahoo.com email addresses as invalid.
+     * @param array $validCodes
      * @param bool $getDetails Defaults to false.
      * 
      * @return bool|object
      */
-    public static function exists($to, $from, $strict = false, $getDetails = false)
+    public static function exists($to, $from, $strict = false, $validCodes = ['250'], $getDetails = false)
     {
         // set variables
         $details = [];
@@ -58,8 +59,8 @@ class Email
 
                 // check response to validate email address
                 if (
-                    !preg_match("/^250/i", $fromResponse) ||
-                    !preg_match("/^250/i", $toResponse) ||
+                    !static::isValid($fromResponse, $validCodes) ||
+                    !static::isValid($toResponse, $validCodes) ||
                     ($strict && $domain == 'yahoo.com')
                 ) {
                     // yahoo stupidity check
@@ -89,6 +90,26 @@ class Email
         } else {
             return $valid;
         }
+    }
+
+    /**
+     * Checks if a response includes one of the valid response codes.
+     *
+     * @param string $response
+     * @param array $codes
+     * @return bool
+     */
+    protected static function isValid($response, $codes)
+    {
+        $valid = false;
+        foreach ($codes as $code) {
+            if (preg_match("/^$code/i", $response)) {
+                $valid = true;
+                break;
+            }
+        }
+
+        return $valid;
     }
 
     /**
